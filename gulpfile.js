@@ -1,4 +1,3 @@
-// generated on 2017-11-16 using generator-webapp 3.0.1
 const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync').create();
@@ -32,7 +31,7 @@ gulp.task('scripts', () => {
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.babel())
     .pipe($.if(dev, $.sourcemaps.write('.')))
-    .pipe(gulp.dest('.tmp/js'))
+    .pipe(gulp.dest('.tmp/scripts'))
     .pipe(reload({stream: true}));
 });
 
@@ -72,20 +71,20 @@ gulp.task('html', ['styles', 'scripts'], () => {
 });
 
 gulp.task('images', () => {
-  return gulp.src('app/framework/images/**/*')
+  return gulp.src('app/assets/images/**/*')
     .pipe($.cache($.imagemin()))
     .pipe(gulp.dest('dist/images'));
 });
 
 gulp.task('fonts', () => {
   return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {})
-    .concat('app/framework/fonts/**/*'))
+    .concat('app/assets/fonts/**/*'))
     .pipe($.if(dev, gulp.dest('.tmp/fonts'), gulp.dest('dist/fonts')));
 });
 
 gulp.task('extras', () => {
   return gulp.src([
-    'app/framework/',
+    'app/assets/',
     '!app/*.html'
   ], {
     dot: true
@@ -110,13 +109,13 @@ gulp.task('serve', () => {
     gulp.watch([
       'app/index.html',
       'app/pages/*.html',
-      'app/framework/images/**/*',
+      'app/assets/images/**/*',
       '.tmp/fonts/**/*'
     ]).on('change', reload);
 
     gulp.watch('app/scss/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
-    gulp.watch('app/fonts/**/*', ['fonts']);
+    gulp.watch('app/assets/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
@@ -157,7 +156,7 @@ gulp.task('wiredep', () => {
     .pipe(wiredep({
       ignorePath: /^(\.\.\/)+/
     }))
-    .pipe(gulp.dest('app/css'));
+    .pipe(gulp.dest('app/scss'));
 
   gulp.src('app/*.html')
     .pipe(wiredep({
