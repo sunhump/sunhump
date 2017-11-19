@@ -14,11 +14,15 @@ gulp.task('styles', () => {
   return gulp.src('app/scss/*.scss')
     .pipe($.plumber())
     .pipe($.if(dev, $.sourcemaps.init()))
+    .pipe($.sass({
+      includePaths: ['node_modules/foundation-sites/scss'],
+    }).on('error', $.sass.logError))
     .pipe($.sass.sync({
       outputStyle: 'expanded',
       precision: 10,
       includePaths: ['.']
     }).on('error', $.sass.logError))
+    
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.if(dev, $.sourcemaps.write()))
     .pipe(gulp.dest('.tmp/css'))
@@ -93,7 +97,7 @@ gulp.task('extras', () => {
 
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
-gulp.task('serve', () => {
+gulp.task('develop', () => {
   runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts'], () => {
     browserSync.init({
       notify: false,
@@ -112,7 +116,7 @@ gulp.task('serve', () => {
       'app/assets/images/**/*',
       '.tmp/fonts/**/*'
     ]).on('change', reload);
-
+    gulp.watch('app/**/*.scss', ['styles']);
     gulp.watch('app/scss/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
     gulp.watch('app/assets/fonts/**/*', ['fonts']);

@@ -1,12 +1,27 @@
-/*
-BEM:
-http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/
 
-.l-layout {}
-.l-layout__element {}
-.l-layout--modifier {}
-*/
 
 .l-grid {
-    
+
+    &__container {
+
+    }
+    &__row {
+        @include flex-grid-row();
+    }
+    &__cell {
+
+        &--1 {
+
+        }
+        &--2 {
+
+        }
+        &--6 {
+            @include flex-grid-column(6);
+        }
+
+    }
+
+
+
 }
