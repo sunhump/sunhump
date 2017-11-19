@@ -22,7 +22,7 @@ gulp.task('styles', () => {
     }).on('error', $.sass.logError))
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.if(dev, $.sourcemaps.write()))
-    .pipe(gulp.dest('.tmp/styles'))
+    .pipe(gulp.dest('.tmp/css'))
     .pipe(reload({stream: true}));
 });
 
@@ -32,7 +32,7 @@ gulp.task('scripts', () => {
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.babel())
     .pipe($.if(dev, $.sourcemaps.write('.')))
-    .pipe(gulp.dest('.tmp/scripts'))
+    .pipe(gulp.dest('.tmp/js'))
     .pipe(reload({stream: true}));
 });
 
@@ -59,7 +59,7 @@ gulp.task('html', ['styles', 'scripts'], () => {
     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
     .pipe($.if(/\.css$/, $.cssnano({safe: true, autoprefixer: false})))
     .pipe($.if(/\.html$/, $.htmlmin({
-      collapseWhitespace: true,
+      collapseWhitespace: false,
       minifyCSS: true,
       minifyJS: {compress: {drop_console: true}},
       processConditionalComments: true,
@@ -108,6 +108,7 @@ gulp.task('serve', () => {
     });
 
     gulp.watch([
+      'app/index.html',
       'app/pages/*.html',
       'app/framework/images/**/*',
       '.tmp/fonts/**/*'
