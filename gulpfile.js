@@ -124,7 +124,7 @@ gulp.task('develop', () => {
   });
 });
 
-gulp.task('serve:dist', ['default'], () => {
+gulp.task('develop:dist', ['default'], () => {
   browserSync.init({
     notify: false,
     port: 9000,
@@ -134,7 +134,7 @@ gulp.task('serve:dist', ['default'], () => {
   });
 });
 
-gulp.task('serve:test', ['scripts'], () => {
+gulp.task('develop:test', ['scripts'], () => {
   browserSync.init({
     notify: false,
     port: 9000,
