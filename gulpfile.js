@@ -7,6 +7,7 @@ const buffer = require('vinyl-buffer');
 const source = require('vinyl-source-stream');
 const browserify = require('browserify');
 const babelify = require('babelify');
+const panini = require('panini');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -74,6 +75,18 @@ gulp.task('bundle', function () {
 //     .pipe(reload({stream: true}));
 // });
 
+gulp.task('panini', function() {
+  gulp.src('./app/pages/**/*.html')
+    .pipe(panini({
+      root:     './app/pages/',
+      layouts:  './app/layouts/',
+      partials: './app/components/',
+      helpers:  './app/helpers/',
+      data:     './app/data/'
+    }))
+    .pipe(gulp.dest(process.env.BUILD_PATH + '.tmp'));
+});
+
 // gulp.task('html', ['styles', 'scripts'], () => {
 //   return gulp.src('app/*.html')
 //     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
@@ -117,59 +130,58 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, [process.env.BUILD_PATH + '.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
-  runSequence(['clean'], ['styles', 'lint', 'bundle', 'fonts'], () => {
+  runSequence(['clean'], ['styles', 'lint', 'bundle', 'panini', 'fonts'], () => {
     browserSync.init({
       notify: false,
-      port: 9000,
+      port: process.env.SERVER_PORT,
       server: {
-        baseDir: [process.env.BUILD_PATH + '.tmp', 'app'],
+        baseDir: [process.env.BUILD_PATH + '.tmp'],
         routes: {
-          '/bower_components': 'bower_components'
+          // '/bower_components': 'bower_components'
         }
       }
     });
 
-    gulp.watch([
-      './app/index.html',
-      './app/pages/**/*.html',
-      './app/assets/images/**/*',
-      process.env.BUILD_PATH + '.tmp/fonts/**/*'
-    ]).on('change', reload);
     gulp.watch('./app/**/*.scss', ['styles']);
     gulp.watch('./app/**/*.js', ['bundle']);
     gulp.watch('./app/assets/fonts/**/*', ['fonts']);
+    gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*'], [panini.refresh]);
+
+    gulp.watch([
+      process.env.BUILD_PATH + '.tmp/**/*'
+    ]).on('change', reload);
   });
 });
 
-gulp.task('develop:dist', ['default'], () => {
-  browserSync.init({
-    notify: false,
-    port: 9000,
-    server: {
-      baseDir: [process.env.BUILD_PATH]
-    }
-  });
-});
+// gulp.task('develop:dist', ['default'], () => {
+//   browserSync.init({
+//     notify: false,
+//     port: process.env.SERVER_PORT,
+//     server: {
+//       baseDir: [process.env.BUILD_PATH]
+//     }
+//   });
+// });
 
-gulp.task('develop:test', ['bundle'], () => {
-  browserSync.init({
-    notify: false,
-    port: 9000,
-    ui: false,
-    server: {
-      baseDir: 'test',
-      routes: {
-        '/scripts': process.env.BUILD_PATH + '.tmp/scripts',
-      }
-    }
-  });
+// gulp.task('develop:test', ['bundle'], () => {
+//   browserSync.init({
+//     notify: false,
+//     port: process.env.SERVER_PORT,
+//     ui: false,
+//     server: {
+//       baseDir: 'test',
+//       routes: {
+//         '/scripts': process.env.BUILD_PATH + '.tmp/scripts',
+//       }
+//     }
+//   });
 
-  gulp.watch('./app/**/*.js', ['bundle']);
-  gulp.watch(['./test/spec/**/*.js', './test/index.html']).on('change', reload);
-  gulp.watch('./test/spec/**/*.js');
-});
+//   gulp.watch('./app/**/*.js', ['bundle']);
+//   gulp.watch(['./test/spec/**/*.js', './test/index.html']).on('change', reload);
+//   gulp.watch('./test/spec/**/*.js');
+// });
 
-gulp.task('production', ['lint', 'bundle', 'images', 'fonts', 'extras'], () => {
+gulp.task('production', ['lint', 'bundle', 'panini', 'images', 'fonts', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'production', gzip: true}));
 });
 
