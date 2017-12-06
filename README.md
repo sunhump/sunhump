@@ -6,7 +6,6 @@
 * Gulp
 * Imagemin
 * npm
-* bower
 * yarn
 
 ## Optionals
