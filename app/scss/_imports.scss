@@ -2,7 +2,11 @@
 
 @include foundation-everything;
 
-@import '../layout/imports';
+@import './variables';
+@import './mixins';
+@import './functions';
+
+@import '../layouts/imports';
 @import '../blocks/imports';
 @import '../components/imports';
 @import '../pages/imports';
