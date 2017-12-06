@@ -4,8 +4,8 @@
     "node": ">=4"
   },
   "scripts": {
-    "develop": "gulp develop",
-    "production": "gulp production"
+    "dev": "gulp develop",
+    "prod": "gulp production"
   },
   "devDependencies": {
     "babel-core": "^6.4.0",
