@@ -2,7 +2,6 @@ const gulp = require('gulp');
 const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync').create();
 const del = require('del');
-const wiredep = require('wiredep').stream;
 const runSequence = require('run-sequence');
 
 const $ = gulpLoadPlugins();
@@ -125,7 +124,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'bundle', 'fonts'], () => {
+  runSequence(['clean'], ['styles', 'bundle', 'fonts'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -146,7 +145,6 @@ gulp.task('develop', () => {
     gulp.watch('./app/**/*.scss', ['styles']);
     gulp.watch('./app/**/*.js', ['bundle']);
     gulp.watch('./app/assets/fonts/**/*', ['fonts']);
-    gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
 });
 
@@ -169,7 +167,6 @@ gulp.task('develop:test', ['bundle'], () => {
       baseDir: 'test',
       routes: {
         '/scripts': '.tmp/scripts',
-        '/bower_components': 'bower_components'
       }
     }
   });
@@ -178,22 +175,6 @@ gulp.task('develop:test', ['bundle'], () => {
   gulp.watch(['./test/spec/**/*.js', './test/index.html']).on('change', reload);
   gulp.watch('./test/spec/**/*.js', ['lint:test']);
 });
-
-// inject bower components
-// gulp.task('wiredep', () => {
-//   gulp.src('./app/**/*.scss')
-//     .pipe($.filter(file => file.stat && file.stat.size))
-//     .pipe(wiredep({
-//       ignorePath: /^(\.\.\/)+/
-//     }))
-//     .pipe(gulp.dest('app/scss'));
-
-//   gulp.src('app/*.html')
-//     .pipe(wiredep({
-//       ignorePath: /^(\.\.\/)*\.\./
-//     }))
-//     .pipe(gulp.dest('app'));
-// });
 
 gulp.task('production', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'production', gzip: true}));
@@ -204,6 +185,6 @@ gulp.task('default', ['develop']);
 // gulp.task('default', () => {
 //   return new Promise(resolve => {
 //     dev = false;
-//     runSequence(['clean', 'wiredep'], 'production', resolve);
+//     runSequence(['clean'], 'production', resolve);
 //   });
 // });
