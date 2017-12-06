@@ -14,11 +14,16 @@ let dev = process.env.NODE_ENV === 'development';
 
 
 gulp.task('styles', () => {
-  return gulp.src('app/scss/*.scss')
+  return gulp.src('./app/app.scss')
     .pipe($.plumber())
     .pipe($.if(dev, $.sourcemaps.init()))
     .pipe($.sass({
-      includePaths: ['node_modules/foundation-sites/scss'],
+      
+      includePaths: [
+        // Foundation - Uncomment to use foundation
+        //'./node_modules/foundation-sites/scss'
+      ],
+
     }).on('error', $.sass.logError))
     .pipe($.sass.sync({
       outputStyle: 'expanded',
@@ -120,7 +125,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
-  runSequence(['clean', 'wiredep'], ['styles', 'scripts', 'fonts'], () => {
+  runSequence(['clean', 'wiredep'], ['styles', 'bundle', 'fonts'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -139,7 +144,7 @@ gulp.task('develop', () => {
       '.tmp/fonts/**/*'
     ]).on('change', reload);
     gulp.watch('./app/**/*.scss', ['styles']);
-    gulp.watch('./app/**/*.js', ['scripts']);
+    gulp.watch('./app/**/*.js', ['bundle']);
     gulp.watch('./app/assets/fonts/**/*', ['fonts']);
     gulp.watch('bower.json', ['wiredep', 'fonts']);
   });
@@ -155,7 +160,7 @@ gulp.task('develop:dist', ['default'], () => {
   });
 });
 
-gulp.task('develop:test', ['scripts'], () => {
+gulp.task('develop:test', ['bundle'], () => {
   browserSync.init({
     notify: false,
     port: 9000,
@@ -169,7 +174,7 @@ gulp.task('develop:test', ['scripts'], () => {
     }
   });
 
-  gulp.watch('./app/**/*.js', ['scripts']);
+  gulp.watch('./app/**/*.js', ['bundle']);
   gulp.watch(['./test/spec/**/*.js', './test/index.html']).on('change', reload);
   gulp.watch('./test/spec/**/*.js', ['lint:test']);
 });

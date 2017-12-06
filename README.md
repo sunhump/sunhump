@@ -36,13 +36,12 @@ gulpfile.js
 [Install yarn](https://yarnpkg.com/en/docs/install)
 [Install gulp](https://gulpjs.com/)
 
-## Project
+## Project dependencies
 
 ```
-npm install
-bower install
 yarn install
 ```
+or if you cant live without npm run ```npm install```.
 
 # Run
 
