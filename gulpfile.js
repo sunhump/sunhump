@@ -29,15 +29,32 @@ gulp.task('styles', () => {
     .pipe(reload({stream: true}));
 });
 
-gulp.task('scripts', () => {
-  return gulp.src('app/scripts/**/*.js')
-    .pipe($.plumber())
-    .pipe($.if(dev, $.sourcemaps.init()))
-    .pipe($.babel())
-    .pipe($.if(dev, $.sourcemaps.write('.')))
-    .pipe(gulp.dest('.tmp/scripts'))
-    .pipe(reload({stream: true}));
-});
+// function bundle (bundler) {
+//   bundler
+//     .bundle()
+//     .pipe(source('app.js')) 
+//     .pipe(buffer())
+//     .pipe(uglify())
+//     .pipe(flatten())
+//     .pipe(sourcemaps.init({ loadMaps : true }))
+//     .pipe(sourcemaps.write('./maps/'))
+//     .pipe(gulp.dest('./frontend/dist/js/'))
+// }
+// gulp.task('bundle', function () {
+//   var bundler = browserify('./frontend/app/app.js')
+//       .transform(babelify, { presets : [ 'es2015' ] });
+//   bundle(bundler);
+// });
+
+// gulp.task('scripts', () => {
+//   return gulp.src('app/scripts/**/*.js')
+//     .pipe($.plumber())
+//     .pipe($.if(dev, $.sourcemaps.init()))
+//     .pipe($.babel())
+//     .pipe($.if(dev, $.sourcemaps.write('.')))
+//     .pipe(gulp.dest('.tmp/scripts'))
+//     .pipe(reload({stream: true}));
+// });
 
 function lint(files) {
   return gulp.src(files)
