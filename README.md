@@ -17,7 +17,7 @@
 ## Foundation
 To use foundation, install node package:
 ```
-npm install foundation-sites --save-dev
+yarn add foundation-sites --dev
 ```
 
 Uncomment foundation lines in:
