@@ -3,6 +3,10 @@ const gulpLoadPlugins = require('gulp-load-plugins');
 const browserSync = require('browser-sync').create();
 const del = require('del');
 const runSequence = require('run-sequence');
+const buffer = require('vinyl-buffer');
+const source = require('vinyl-source-stream');
+const browserify = require('browserify');
+const babelify = require('babelify');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -36,15 +40,22 @@ gulp.task('styles', () => {
     .pipe(reload({stream: true}));
 });
 
+gulp.task('lint', () => {
+  return gulp.src(['./app/**/*.js','!node_modules/**'])
+    .pipe($.eslint())
+    .pipe($.eslint.format())
+    .pipe($.eslint.failAfterError());
+});
+
 function bundle (bundler) {
   bundler
     .bundle()
-    .pipe(source('app.js')) 
+    .pipe(source('app.js'))
     .pipe(buffer())
-    .pipe(uglify())
-    .pipe(flatten())
-    .pipe(sourcemaps.init({ loadMaps : true }))
-    .pipe(sourcemaps.write('./maps/'))
+    .pipe($.uglify())
+    .pipe($.flatten())
+    .pipe($.if(dev, $.sourcemaps.init({ loadMaps : true })))
+    .pipe($.if(dev, $.sourcemaps.write('./maps/')))
     .pipe(gulp.dest(process.env.BUILD_PATH + 'scripts'))
 }
 gulp.task('bundle', function () {
@@ -62,24 +73,6 @@ gulp.task('bundle', function () {
 //     .pipe(gulp.dest('.tmp/scripts'))
 //     .pipe(reload({stream: true}));
 // });
-
-function lint(files) {
-  return gulp.src(files)
-    .pipe($.eslint({ fix: true }))
-    .pipe(reload({stream: true, once: true}))
-    .pipe($.eslint.format())
-    .pipe($.if(!browserSync.active, $.eslint.failAfterError()));
-}
-
-gulp.task('lint', () => {
-  return lint('./app/**/*.js')
-    .pipe(gulp.dest('app/scripts')); // TODO: Vad gör dest?
-});
-
-gulp.task('lint:test', () => {
-  return lint('./test/spec/**/*.js')
-    .pipe(gulp.dest('test/spec'));
-});
 
 // gulp.task('html', ['styles', 'scripts'], () => {
 //   return gulp.src('app/*.html')
@@ -124,7 +117,7 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
-  runSequence(['clean'], ['styles', 'bundle', 'fonts'], () => {
+  runSequence(['clean'], ['styles', 'lint', 'bundle', 'fonts'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
@@ -173,10 +166,10 @@ gulp.task('develop:test', ['bundle'], () => {
 
   gulp.watch('./app/**/*.js', ['bundle']);
   gulp.watch(['./test/spec/**/*.js', './test/index.html']).on('change', reload);
-  gulp.watch('./test/spec/**/*.js', ['lint:test']);
+  gulp.watch('./test/spec/**/*.js');
 });
 
-gulp.task('production', ['lint', 'html', 'images', 'fonts', 'extras'], () => {
+gulp.task('production', ['lint', 'bundle', 'images', 'fonts', 'extras'], () => {
   return gulp.src('dist/**/*').pipe($.size({title: 'production', gzip: true}));
 });
 

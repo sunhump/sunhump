@@ -1,6 +1,8 @@
 // npm packages
 import jQuery from 'jquery';
-import Foundation from 'foundation-site';
+
+// Foundation - Uncomment to use foundation
+// import Foundation from 'foundation-site';
 
 // components
 import MyCustomTodoComponent from './components/c-todo/c-todo';

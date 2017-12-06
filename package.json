@@ -1,8 +1,8 @@
 {
   "private": true,
   "scripts": {
-    "dev": "set NODE_ENV=development&&gulp dev",
-    "production": "set NODE_ENV=production&&gulp build",
+    "dev": "set NODE_ENV=development&&gulp develop",
+    "production": "set NODE_ENV=production&&gulp production",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "engines": {
@@ -11,12 +11,18 @@
   "dependencies": {},
   "devDependencies": {
     "babel-core": "^6.4.0",
-    "babel-preset-es2015": "^6.3.13",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-preset-react": "^6.24.1",
+    "babel-preset-stage-0": "^6.24.1",
     "babel-register": "^6.5.2",
+    "babelify": "^8.0.0",
     "browser-sync": "^2.2.1",
+    "browserify": "^14.5.0",
     "chai": "^4.1.2",
     "del": "^2.2.0",
     "dotenv": "^4.0.0",
+    "eslint": "^4.12.1",
+    "eslint-plugin-react": "^7.5.1",
     "foundation-sites": "^6.4.4-rc1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
@@ -25,6 +31,7 @@
     "gulp-cssnano": "^2.0.0",
     "gulp-eslint": "^3.0.0",
     "gulp-filter": "^4.0.0",
+    "gulp-flatten": "^0.3.1",
     "gulp-htmlmin": "^3.0.0",
     "gulp-if": "^2.0.2",
     "gulp-imagemin": "^3.0.1",
@@ -39,6 +46,8 @@
     "jquery": "^3.2.1",
     "main-bower-files": "^2.5.0",
     "mocha": "^4.0.1",
-    "run-sequence": "^1.2.2"
+    "run-sequence": "^1.2.2",
+    "vinyl-buffer": "^1.0.0",
+    "vinyl-source-stream": "^1.1.0"
   }
 }
