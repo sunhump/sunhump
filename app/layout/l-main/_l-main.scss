@@ -1,50 +1,8 @@
-.l-grid {
+/*
+BEM:
+http://csswizardry.com/2013/01/mindbemding-getting-your-head-round-bem-syntax/
 
-    &__container {
-
-    }
-    &__row {
-        @include flex-grid-row();
-    }
-    &__cell {
-
-        &--1 {
-            @include flex-grid-column(1);
-        }
-        &--2 {
-            @include flex-grid-column(2);
-        }
-        &--3 {
-            @include flex-grid-column(3);
-        }
-        &--4 {
-            @include flex-grid-column(4);
-        }
-        &--5 {
-            @include flex-grid-column(5);
-        }
-        &--6 {
-            @include flex-grid-column(6);
-        }
-        &--7 {
-            @include flex-grid-column(7);
-        }
-        &--8 {
-            @include flex-grid-column(8);
-        }
-        &--9 {
-            @include flex-grid-column(9);
-        }
-        &--10 {
-            @include flex-grid-column(10);
-        }
-        &--11 {
-            @include flex-grid-column(11);
-        }
-        &--12 {
-            @include flex-grid-column(12);
-        }
-
-    }
-
-}
+.l-layout {}
+.l-layout__element {}
+.l-layout--modifier {}
+*/

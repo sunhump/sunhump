@@ -36,7 +36,7 @@ gulp.task('styles', () => {
     
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.if(dev, $.sourcemaps.write()))
-    .pipe(gulp.dest('.tmp/css'))
+    .pipe(gulp.dest(process.env.BUILD_PATH + '.tmp/css'))
     .pipe(reload({stream: true}));
 });
 
@@ -101,7 +101,7 @@ gulp.task('images', () => {
 gulp.task('fonts', () => {
   return gulp.src(require('main-bower-files')('**/*.{eot,svg,ttf,woff,woff2}', function (err) {})
     .concat('./app/assets/fonts/**/*'))
-    .pipe($.if(dev, gulp.dest('.tmp/fonts'), gulp.dest(process.env.BUILD_PATH + 'fonts')));
+    .pipe($.if(dev, gulp.dest(process.env.BUILD_PATH + '.tmp/fonts'), gulp.dest(process.env.BUILD_PATH + 'fonts')));
 });
 
 gulp.task('extras', () => {
@@ -114,7 +114,7 @@ gulp.task('extras', () => {
   }).pipe(gulp.dest(process.env.BUILD_PATH));
 });
 
-gulp.task('clean', del.bind(null, ['.tmp', process.env.BUILD_PATH]));
+gulp.task('clean', del.bind(null, [process.env.BUILD_PATH + '.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
   runSequence(['clean'], ['styles', 'lint', 'bundle', 'fonts'], () => {
@@ -122,7 +122,7 @@ gulp.task('develop', () => {
       notify: false,
       port: 9000,
       server: {
-        baseDir: ['.tmp', 'app'],
+        baseDir: [process.env.BUILD_PATH + '.tmp', 'app'],
         routes: {
           '/bower_components': 'bower_components'
         }
@@ -133,7 +133,7 @@ gulp.task('develop', () => {
       './app/index.html',
       './app/pages/**/*.html',
       './app/assets/images/**/*',
-      '.tmp/fonts/**/*'
+      process.env.BUILD_PATH + '.tmp/fonts/**/*'
     ]).on('change', reload);
     gulp.watch('./app/**/*.scss', ['styles']);
     gulp.watch('./app/**/*.js', ['bundle']);
@@ -159,7 +159,7 @@ gulp.task('develop:test', ['bundle'], () => {
     server: {
       baseDir: 'test',
       routes: {
-        '/scripts': '.tmp/scripts',
+        '/scripts': process.env.BUILD_PATH + '.tmp/scripts',
       }
     }
   });
