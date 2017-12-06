@@ -23,7 +23,6 @@
     "dotenv": "^4.0.0",
     "eslint": "^4.12.1",
     "eslint-plugin-react": "^7.5.1",
-    "foundation-sites": "^6.4.4-rc1",
     "gulp": "^3.9.0",
     "gulp-autoprefixer": "^3.0.1",
     "gulp-babel": "^6.1.1",
