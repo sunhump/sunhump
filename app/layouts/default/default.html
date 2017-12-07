@@ -1,2 +1,27 @@
 <!-- Panini requires a default layout -->
-{{> body}}
+
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <meta name="description" content="">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>title</title>
+    <link rel="stylesheet" href="/styles/app.css">
+  </head>
+  <body>
+    <!--[if IE]>
+    <p class="browserupgrade">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+    <![endif]-->
+
+    <div class="l-default">
+    
+      {{> c-header}}
+      {{> body}}
+      {{> c-footer}}
+    
+    </div>
+
+    <script src="/scripts/app.js"></script>
+  </body>
+</html>

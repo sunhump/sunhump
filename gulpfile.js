@@ -37,7 +37,7 @@ gulp.task('styles', () => {
     
     .pipe($.autoprefixer({browsers: ['> 1%', 'last 2 versions', 'Firefox ESR']}))
     .pipe($.if(dev, $.sourcemaps.write()))
-    .pipe(gulp.dest(process.env.BUILD_PATH + '.tmp/css'))
+    .pipe(gulp.dest(process.env.BUILD_PATH + 'styles'))
     .pipe(reload({stream: true}));
 });
 
@@ -58,22 +58,13 @@ function bundle (bundler) {
     .pipe($.if(dev, $.sourcemaps.init({ loadMaps : true })))
     .pipe($.if(dev, $.sourcemaps.write('./maps/')))
     .pipe(gulp.dest(process.env.BUILD_PATH + 'scripts'))
+    // .pipe(reload({stream: true}));
 }
 gulp.task('bundle', function () {
   var bundler = browserify('./app/app.js')
       .transform(babelify);
   bundle(bundler);
 });
-
-// gulp.task('scripts', () => {
-//   return gulp.src('app/scripts/**/*.js')
-//     .pipe($.plumber())
-//     .pipe($.if(dev, $.sourcemaps.init()))
-//     .pipe($.babel())
-//     .pipe($.if(dev, $.sourcemaps.write('.')))
-//     .pipe(gulp.dest('.tmp/scripts'))
-//     .pipe(reload({stream: true}));
-// });
 
 gulp.task('panini', function() {
   gulp.src('./app/pages/**/*.html')
@@ -84,7 +75,7 @@ gulp.task('panini', function() {
       helpers:  './app/helpers/',
       data:     './app/data/'
     }))
-    .pipe(gulp.dest(process.env.BUILD_PATH + '.tmp'));
+    .pipe(gulp.dest('.tmp'));
 });
 
 // gulp.task('html', ['styles', 'scripts'], () => {
@@ -135,21 +126,20 @@ gulp.task('develop', () => {
       notify: false,
       port: process.env.SERVER_PORT,
       server: {
-        baseDir: [process.env.BUILD_PATH + '.tmp'],
+        baseDir: ['.tmp'],
         routes: {
           // '/bower_components': 'bower_components'
 
-          // TODO: Testa detta
-          // '/scripts': process.env.BUILD_PATH + '/scripts',
-          // '/styles': process.env.BUILD_PATH + '/styles',
+          '/scripts': process.env.BUILD_PATH + '/scripts',
+          '/styles': process.env.BUILD_PATH + '/styles',
         }
       }
     });
 
-    gulp.watch('./app/**/*.scss', ['styles']);
-    gulp.watch('./app/**/*.js', ['bundle']);
-    gulp.watch('./app/assets/fonts/**/*', ['fonts']);
-    gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*'], [panini.refresh]);
+    // gulp.watch('./app/**/*.scss', ['styles']);
+    // gulp.watch('./app/**/*.js', ['bundle']);
+    // gulp.watch('./app/assets/fonts/**/*', ['fonts']);
+    // gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*'], [panini.refresh]);
 
     gulp.watch([
       process.env.BUILD_PATH + '.tmp/**/*'
@@ -186,7 +176,7 @@ gulp.task('develop', () => {
 // });
 
 gulp.task('production', ['lint', 'bundle', 'panini', 'images', 'fonts', 'extras'], () => {
-  return gulp.src('dist/**/*').pipe($.size({title: 'production', gzip: true}));
+  return gulp.src('dist/**/*').pipe($.size({title: 'production', gzip: true})); // TODO
 });
 
 gulp.task('default', ['develop']);

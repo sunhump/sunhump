@@ -8,24 +8,59 @@
 * npm
 * yarn
 
-## Optionals
+### Panini
 
-* Foundation
+Folders used by [Panini](https://github.com/zurb/panini):
 
-# Frameworks
+```
+components
+helpers
+layouts
+pages
+data
+```
 
-## Foundation
-To use foundation, install node package:
+### JavaScript
+
+Javascript is placed in its component folder ```components/c-todo/c-todo.js```. Follow the script example ```c-todo.js``` for structure.
+
+### React
+
+To use React, install node package:
+```
+yarn add react babel-preset-react --dev
+```
+
+Uncomment React lines in:
+```
+app/app.init.js
+.babelrc
+```
+
+# Setup
+
+## Build path
+
+Set build path variable ```BUILD_PATH``` in the file ```.env```.
+
+## Optional frameworks
+
+These are optional frameworks that can be included in the seed project based on your needs.
+
+### Foundation
+To use Foundation, install node package:
 ```
 yarn add foundation-sites --dev
 ```
 
-Uncomment foundation lines in:
+Uncomment Foundation lines in:
 ```
 app/app.init.js
 app/app.scss
 gulpfile.js
 ```
+
+### React (with redux)
 
 # Install
 

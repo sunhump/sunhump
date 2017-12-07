@@ -1,6 +1,9 @@
 // npm packages
 import jQuery from 'jquery';
 
+// React - Uncomment to use React
+// import 'babel-polyfill';
+
 // Foundation - Uncomment to use foundation
 // import Foundation from 'foundation-site';
 
