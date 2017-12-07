@@ -1,54 +1,46 @@
 # frontend-seed-project
 
-## Includes
+Included packages:
 
-* Panini
-* Gulp
-* Imagemin
-* npm
-* yarn
+* Compilation
+  * Gulp
+  * npm
+  * yarn
+  * (bower?)
+  * browserify (babel, ES6)
+* Frameworks
+  * Panini
+  * jQuery
+* Test frameworks
+  * mocha
+  * chai
 
-### Panini
+# Install
 
-Folders used by [Panini](https://github.com/zurb/panini):
+## Dependencies
+
+[Install node.js LTS](https://nodejs.org/en/)
+
+[Install yarn](https://yarnpkg.com/en/docs/install)
+
+[Install gulp](https://gulpjs.com/)
+
+## Project dependencies
 
 ```
-components
-helpers
-layouts
-pages
-data
+yarn install
 ```
+or if you cant live without npm run ```npm install```.
 
-### JavaScript
+## Setup build path
 
-Javascript is placed in its component folder ```components/c-todo/c-todo.js```. Follow the script example ```c-todo.js``` for structure.
-
-### React
-
-To use React, install node package:
-```
-yarn add react babel-preset-react --dev
-```
-
-Uncomment React lines in:
-```
-app/app.init.js
-.babelrc
-```
-
-# Setup
-
-## Build path
-
-Set build path variable ```BUILD_PATH``` in the file ```.env```.
+Set ```BUILD_PATH``` variable in the file ```.env```.
 
 ## Optional frameworks
 
-These are optional frameworks that can be included in the seed project based on your needs.
-
 ### Foundation
-To use Foundation, install node package:
+
+To use Foundation, install these npm packages:
 ```
 yarn add foundation-sites --dev
 ```
@@ -60,22 +52,40 @@ app/app.scss
 gulpfile.js
 ```
 
-### React (with redux)
+### React
 
-# Install
+To use React, install these npm packages:
+```
+yarn add react babel-preset-react --dev
+```
 
-## Dependencies
+Uncomment React lines in:
+```
+app/app.init.js
+.babelrc
+```
 
-[Install node.js LTS](https://nodejs.org/en/)
-[Install yarn](https://yarnpkg.com/en/docs/install)
-[Install gulp](https://gulpjs.com/)
+# Structures
 
-## Project dependencies
+## Panini
+
+Folders used by [Panini](https://github.com/zurb/panini):
 
 ```
-yarn install
+components
+helpers
+layouts
+pages
+data
 ```
-or if you cant live without npm run ```npm install```.
+
+## JavaScript
+
+Javascript is placed in its component folder ```components/c-todo/c-todo.js```. Follow the script example ```c-todo.js``` for structure.
+
+## React (with redux)
+
+TODO
 
 # Run
 
