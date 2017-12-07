@@ -138,6 +138,10 @@ gulp.task('develop', () => {
         baseDir: [process.env.BUILD_PATH + '.tmp'],
         routes: {
           // '/bower_components': 'bower_components'
+
+          // TODO: Testa detta
+          // '/scripts': process.env.BUILD_PATH + '/scripts',
+          // '/styles': process.env.BUILD_PATH + '/styles',
         }
       }
     });
