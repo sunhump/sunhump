@@ -83,6 +83,9 @@ data
 
 Javascript is placed in its component folder ```components/c-todo/c-todo.js```. Follow the script example ```c-todo.js``` for structure.
 
+Libraries are install through npm/yarn and imported in ```app/app.init.js```.
+
+
 ## React (with redux)
 
 TODO
