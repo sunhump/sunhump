@@ -58,7 +58,7 @@ function bundle (bundler) {
     .pipe($.if(dev, $.sourcemaps.init({ loadMaps : true })))
     .pipe($.if(dev, $.sourcemaps.write('./maps/')))
     .pipe(gulp.dest(process.env.BUILD_PATH + 'scripts'))
-    // .pipe(reload({stream: true}));
+    .pipe(reload({stream: true}));
 }
 gulp.task('bundle', function () {
   var bundler = browserify('./app/app.js')
