@@ -138,7 +138,7 @@ gulp.task('develop', () => {
 
     gulp.watch('./app/**/*.scss', ['styles']);
     gulp.watch('./app/**/*.js', ['bundle']);
-    // gulp.watch('./app/assets/fonts/**/*', ['fonts']);
+    gulp.watch('./app/assets/fonts/**/*', ['fonts']);
     // gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*'], [panini.refresh]);
     // gulp.watch(['.tmp/**/*']).on('change', reload);
   });
