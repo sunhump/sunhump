@@ -78,23 +78,9 @@ gulp.task('panini', function() {
     .pipe(gulp.dest('.tmp'));
 });
 
-// gulp.task('html', ['styles', 'scripts'], () => {
-//   return gulp.src('app/*.html')
-//     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-//     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
-//     .pipe($.if(/\.css$/, $.cssnano({safe: true, autoprefixer: false})))
-//     .pipe($.if(/\.html$/, $.htmlmin({
-//       collapseWhitespace: false,
-//       minifyCSS: true,
-//       minifyJS: {compress: {drop_console: true}},
-//       processConditionalComments: true,
-//       removeComments: true,
-//       removeEmptyAttributes: true,
-//       removeScriptTypeAttributes: true,
-//       removeStyleLinkTypeAttributes: true
-//     })))
-//     .pipe(gulp.dest('dist'));
-// });
+gulp.task('browsersync.reload', function() {
+  browserSync.reload();
+});
 
 gulp.task('images', () => {
   return gulp.src('./app/assets/images/**/*')
@@ -118,7 +104,7 @@ gulp.task('extras', () => {
   }).pipe(gulp.dest(process.env.BUILD_PATH));
 });
 
-gulp.task('clean', del.bind(null, [process.env.BUILD_PATH + '.tmp', process.env.BUILD_PATH]));
+gulp.task('clean', del.bind(null, ['.tmp', process.env.BUILD_PATH]));
 
 gulp.task('develop', () => {
   runSequence(['clean'], ['styles', 'lint', 'bundle', 'panini', 'fonts'], () => {
@@ -139,8 +125,8 @@ gulp.task('develop', () => {
     gulp.watch('./app/**/*.scss', ['styles']);
     gulp.watch('./app/**/*.js', ['bundle']);
     gulp.watch('./app/assets/fonts/**/*', ['fonts']);
-    // gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*'], [panini.refresh]);
-    // gulp.watch(['.tmp/**/*']).on('change', reload);
+    gulp.watch('./app/assets/images/**/*', ['images']);
+    gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*.html'], ['panini', 'browsersync.reload']);
   });
 });
 
@@ -172,15 +158,8 @@ gulp.task('develop', () => {
 //   gulp.watch('./test/spec/**/*.js');
 // });
 
-gulp.task('production', ['lint', 'bundle', 'panini', 'images', 'fonts', 'extras'], () => {
+gulp.task('production', ['clean', 'lint', 'bundle', 'panini', 'images', 'fonts', 'extras'], () => {
   return gulp.src(process.env.BUILD_PATH + '/**/*').pipe($.size({title: 'production', gzip: true}));
 });
 
 gulp.task('default', ['develop']);
-
-// gulp.task('default', () => {
-//   return new Promise(resolve => {
-//     dev = false;
-//     runSequence(['clean'], 'production', resolve);
-//   });
-// });
