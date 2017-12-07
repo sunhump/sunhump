@@ -26,6 +26,7 @@ module.exports = (() => {
         // jQuery(document).foundation();
 
         // init
-        MyCustomTodoComponent.init();
+        //MyCustomTodoComponent.init();
+
     });
-});
+})();
