@@ -113,6 +113,7 @@ gulp.task('develop', () => {
       port: process.env.SERVER_PORT,
       server: {
         baseDir: ['.tmp'],
+        directory: true,
         routes: {
           // '/bower_components': 'bower_components'
 
