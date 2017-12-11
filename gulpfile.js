@@ -7,6 +7,7 @@ const babelify = require('babelify');
 const buffer = require('vinyl-buffer');
 const source = require('vinyl-source-stream');
 const runSequence = require('run-sequence');
+const panini = require('panini');
 
 const $ = gulpLoadPlugins();
 const reload = browserSync.reload;
@@ -67,22 +68,40 @@ gulp.task('lint:test', () => {
     .pipe(gulp.dest('test/spec'));
 });
 
-gulp.task('html', ['styles', 'scripts'], () => {
-  return gulp.src('app/*.html')
-    .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
-    .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
-    .pipe($.if(/\.css$/, $.cssnano({safe: true, autoprefixer: false})))
-    .pipe($.if(/\.html$/, $.htmlmin({
-      collapseWhitespace: false,
-      minifyCSS: true,
-      minifyJS: {compress: {drop_console: true}},
-      processConditionalComments: true,
-      removeComments: true,
-      removeEmptyAttributes: true,
-      removeScriptTypeAttributes: true,
-      removeStyleLinkTypeAttributes: true
-    })))
-    .pipe(gulp.dest('dist'));
+// gulp.task('html', ['styles', 'scripts'], () => {
+//   return gulp.src('app/*.html')
+//     .pipe($.useref({searchPath: ['.tmp', 'app', '.']}))
+//     .pipe($.if(/\.js$/, $.uglify({compress: {drop_console: true}})))
+//     .pipe($.if(/\.css$/, $.cssnano({safe: true, autoprefixer: false})))
+//     .pipe($.if(/\.html$/, $.htmlmin({
+//       collapseWhitespace: false,
+//       minifyCSS: true,
+//       minifyJS: {compress: {drop_console: true}},
+//       processConditionalComments: true,
+//       removeComments: true,
+//       removeEmptyAttributes: true,
+//       removeScriptTypeAttributes: true,
+//       removeStyleLinkTypeAttributes: true
+//     })))
+//     .pipe(gulp.dest('dist'));
+// });
+
+gulp.task('pages', () => {
+  return gulp.src('./app/pages/**/*.html')
+    .pipe(panini({
+      root:     './app/pages/',
+      layouts:  './app/views/',
+      partials: './app/components/',
+      helpers:  './app/helpers/',
+      data:     './app/data/'
+    }))
+    .pipe(gulp.dest('.tmp'))
+    .pipe(reload({stream: true}));
+});
+
+gulp.task('resetPages', (done) => {
+  panini.refresh();
+  done();
 });
 
 gulp.task('images', () => {
@@ -109,12 +128,13 @@ gulp.task('extras', () => {
 gulp.task('clean', del.bind(null, ['.tmp', 'dist']));
 
 gulp.task('develop', () => {
-  runSequence(['clean'], ['styles', 'scripts', 'fonts'], () => {
+  runSequence(['clean'], ['styles', 'scripts', 'fonts', 'pages'], () => {
     browserSync.init({
       notify: false,
       port: 9000,
       server: {
         baseDir: ['.tmp', 'app'],
+        directory: true,
         routes: {
           '/bower_components': 'bower_components'
         }
@@ -131,6 +151,7 @@ gulp.task('develop', () => {
     gulp.watch('app/scss/**/*.scss', ['styles']);
     gulp.watch('app/scripts/**/*.js', ['scripts']);
     gulp.watch('app/assets/fonts/**/*', ['fonts']);
+    gulp.watch(['./app/{layouts,components,helpers,data,pages}/**/*.html'], ['resetPages', 'pages']);
   });
 });
 
